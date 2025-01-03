@@ -59,7 +59,8 @@ public class GetBalance {
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
             String responseData = response.body().string();
-            return new JSONObject(responseData).getJSONObject("result").getString("peer_id").replace("0.0.0.0", ip);
+            String address = new JSONObject(responseData).getJSONObject("result").getJSONArray("addresses").getString(0);
+            return address.substring(address.lastIndexOf('/') + 1);
         }
     }
 
